@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yurii Bosovyk - AI Automation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --primary: #00f0ff;
+            --secondary: #7000ff;
+            --text-main: #ffffff;
+            --text-muted: #8892b0;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .glitch {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* 3D Background */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Scroll Snapping Container */
+        .presentation-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        section.slide {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 5%;
+            position: relative;
+        }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 4rem;
+            max-width: 1000px;
+            width: 100%;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            transform: translateY(100px) scale(0.95);
+            opacity: 0;
+            transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .slide.active .glass-card {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        /* Hero Text */
+        .hero-title {
+            font-size:clamp(4rem, 6vw, 6rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .skill-item {
+            background: rgba(0, 240, 255, 0.03);
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            padding: 2.5rem;
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-item::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            transform: translateX(-100%);
+            transition: 0.6s;
+        }
+
+        .skill-item:hover::before {
+            transform: translateX(100%);
+        }
+
+        .skill-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 240, 255, 0.1);
+            border-color: rgba(0, 240, 255, 0.4);
+            background: rgba(0, 240, 255, 0.08);
+        }
+
+        .skill-item h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-item p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        /* Buttons */
+        .btn-glowing {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--bg-color);
+            background: var(--primary);
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+            font-family: 'Space Grotesk', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-glowing::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 100%;
+            background: #fff;
+            border-radius: 50px;
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s ease-out;
+        }
+
+        .btn-glowing:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .btn-glowing:hover {
+            color: var(--bg-color);
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.8), 0 0 60px rgba(255, 255, 255, 0.8);
+            transform: translateY(-3px);
+        }
+
+        /* Projects */
+        .project-content h3 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+        
+        .project-content p {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            max-width: 800px;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tech-pill {
+            background: rgba(112, 0, 255, 0.15);
+            color: #e2caff;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(112, 0, 255, 0.4);
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Scroll indicator */
+        .scroll-down {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0.7;
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .scroll-down svg {
+            width: 30px;
+            height: 30px;
+            margin-top: 15px;
+            stroke: var(--primary);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-20px) translateX(-50%); }
+            60% { transform: translateY(-10px) translateX(-50%); }
+        }
+
+        @media (max-width: 768px) {
+            .glass-card { padding: 2rem; }
+            section.slide { padding: 1rem; }
+            .hero-title { font-size: 2.5rem; }
+            .skills-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 3D Particle Canvas -->
+    <div id="canvas-container"></div>
+
+    <div class="presentation-container" id="scroll-container">
+        
+        <!-- Slide 1: Introduction -->
+        <section class="slide" id="slide1">
+            <div class="glass-card">
+                <h2 class="hero-subtitle">AI AUTOMATION ENGINEER & PYTHON SPECIALIST</h2>
+                <h1 class="hero-title">Yurii Bosovyk</h1>
+                <p style="color: var(--text-muted); font-size: 1.3rem; max-width: 700px; margin-bottom: 3.5rem; line-height: 1.6;">
+                    I build intelligent automation pipelines, Prompt/LLM integrations, and Python-driven systems that eliminate manual friction. Focused on turning complex data structures into autonomous, revenue-generating tools.
+                </p>
+                <a href="#slide2" class="btn-glowing">View Expertise</a>
+            </div>
+            <div class="scroll-down">
+                <span>Scroll</span>
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+            </div>
+        </section>
+
+        <!-- Slide 2: Core Competencies -->
+        <section class="slide" id="slide2">
+            <div class="glass-card" style="max-width: 1200px;">
+                <h2 style="font-size: 3.5rem; margin-bottom: 3rem;">Core <span style="color: var(--primary);">Architecture</span></h2>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <h3>AI & Prompt Engineering</h3>
+                        <p>Designing sophisticated LLM architectures, instruction hierarchies, and AI Agents capable of decision-making, natural language reasoning, and RAG data retrieval.</p>
+                    </div>
+                    <div class="skill-item">
+                        <h3>Python Automation</h3>
+                        <p>Engineering complex data-fetching scripts, API integrations (BingX, Telegram, RestAPIs), and internal tools that streamline business operations and reduce human error.</p>
+                    </div>
+                    <div class="skill-item">
+                        <h3>Web Interfaces</h3>
+                        <p>Building high-performance administrative dashboards and premium landing pages using HTML/CSS, seamlessly connecting frontend interfaces with backend AI logic.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Featured Project 1 -->
+        <section class="slide" id="slide3">
+            <div class="glass-card">
+                <div class="project-content">
+                    <h2 style="font-size: 1.2rem; color: var(--secondary); letter-spacing: 4px; margin-bottom: 1rem; text-transform: uppercase;">System [01]</h2>
+                    <h3>Autonomous Trading AI</h3>
+                    <div class="tech-stack">
+                        <span class="tech-pill">Python</span>
+                        <span class="tech-pill">Algorithmic Logic</span>
+                        <span class="tech-pill">API Integration</span>
+                        <span class="tech-pill">Data Fetching</span>
+                    </div>
+                    <p>An intelligent system built to process multi-timeframe market data and execute autonomous decisions via the BingX API. It utilizes complex conditional logic, robust error handling, and dynamic memory modules — core components required for modern AI Agents and algorithmic routing applications.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Featured Project 2 -->
+        <section class="slide" id="slide4">
+            <div class="glass-card">
+                <div class="project-content">
+                    <h2 style="font-size: 1.2rem; color: var(--primary); letter-spacing: 4px; margin-bottom: 1rem; text-transform: uppercase;">Platform [02]</h2>
+                    <h3>Web3 Business Broker</h3>
+                    <div class="tech-stack">
+                        <span class="tech-pill">Frontend Stack</span>
+                        <span class="tech-pill">UI/UX Design</span>
+                        <span class="tech-pill">Escrow Workflows</span>
+                    </div>
+                    <p>Designed the frontend architecture for a premium marketplace that facilitates the secure acquisition of businesses via cryptocurrency. Engineered with a focus on high-end Glassmorphism aesthetics and conversion-optimized user flows.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Contact CTA -->
+        <section class="slide" id="slide5">
+            <div class="glass-card" style="text-align: center; border-color: rgba(112, 0, 255, 0.3);">
+                <h1 style="font-size: 4.5rem; margin-bottom: 1.5rem;">Initialize <span style="background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Connection</span>.</h1>
+                <p style="color: var(--text-muted); font-size: 1.3rem; max-width: 600px; margin: 0 auto 3.5rem auto; line-height: 1.6;">
+                    Ready to architect the next generation of AI-driven internal tools and automated pipelines. 
+                </p>
+                <a href="https://t.me/Boulevar0lybitel" target="_blank" class="btn-glowing" style="font-size: 1.4rem; padding: 1.5rem 4rem;">Message on Telegram</a>
+            </div>
+        </section>
+        
+    </div>
+
+    <script>
+        // --- 1. Intersection Observer for Slide Animations ---
+        const slides = document.querySelectorAll('.slide');
+        const scrollContainer = document.getElementById('scroll-container');
+
+        const observerOptions = {
+            root: scrollContainer,
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        slides.forEach(slide => observer.observe(slide));
+        setTimeout(() => slides[0].classList.add('active'), 50);
+
+        // --- 2. Advanced Three.js Matrix WebGL Background ---
+        const scene = new THREE.Scene();
+        // Fog for depth
+        scene.fog = new THREE.FogExp2(0x050505, 0.002);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Performant pixel ratio
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // Create Particles Ecosystem
+        const geometry = new THREE.BufferGeometry();
+        const count = 3000;
+        const positions = new Float32Array(count * 3);
+        const colors = new Float32Array(count * 3);
+
+        const colorPrimary = new THREE.Color(0x00f0ff);
+        const colorSecondary = new THREE.Color(0x7000ff);
+
+        for(let i = 0; i < count; i++) {
+            let i3 = i * 3;
+            // Position: massive sphere
+            positions[i3] = (Math.random() - 0.5) * 20;
+            positions[i3+1] = (Math.random() - 0.5) * 20;
+            positions[i3+2] = (Math.random() - 0.5) * 20;
+
+            // Mixture of cyans and purples
+            const mixedColor = colorPrimary.clone().lerp(colorSecondary, Math.random());
+            colors[i3] = mixedColor.r;
+            colors[i3+1] = mixedColor.g;
+            colors[i3+2] = mixedColor.b;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        // Circular generic particle
+        const canvas = document.createElement('canvas');
+        canvas.width = 16;
+        canvas.height = 16;
+        const context = canvas.getContext('2d');
+        const gradient = context.createRadialGradient(8, 8, 0, 8, 8, 8);
+        gradient.addColorStop(0, 'rgba(255,255,255,1)');
+        gradient.addColorStop(1, 'rgba(255,255,255,0)');
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, 16, 16);
+        const texture = new THREE.CanvasTexture(canvas);
+
+        const material = new THREE.PointsMaterial({
+            size: 0.05,
+            vertexColors: true,
+            map: texture,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+
+        const particlesMesh = new THREE.Points(geometry, material);
+        scene.add(particlesMesh);
+
+        camera.position.z = 5;
+
+        // Mouse Interactivity
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX - windowHalfX);
+            mouseY = (event.clientY - windowHalfY);
+        });
+
+        // Loop
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const elapsedTime = clock.getElapsedTime();
+
+            targetX = mouseX * 0.0005;
+            targetY = mouseY * 0.0005;
+
+            // Base rotation
+            particlesMesh.rotation.y += 0.0005;
+            particlesMesh.rotation.x += 0.0002;
+
+            // Follow mouse smoothly
+            particlesMesh.rotation.x += 0.05 * (targetY - particlesMesh.rotation.x);
+            particlesMesh.rotation.y += 0.05 * (targetX - particlesMesh.rotation.y);
+
+            // Floating effect on the subtle Y axis
+            particlesMesh.position.y = Math.sin(elapsedTime * 0.2) * 0.5;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Responsive Resizing
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexTrade | Crypto Business Broker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Browser-Level Security Shields -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'; img-src 'self' data: https://*;">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <!-- Framebuster (Anti-Clickjacking) -->
+    <style id="antiClickjack">body{display:none !important;}</style>
+    <script type="text/javascript">
+        if (self === top) {
+            var antiClickjack = document.getElementById("antiClickjack");
+            antiClickjack.parentNode.removeChild(antiClickjack);
+        } else {
+            top.location = self.location;
+        }
+    </script>
+</head>
+<body>
+    <div class="blob-bg blob-1"></div>
+    <div class="blob-bg blob-2"></div>
+    
+    <nav class="navbar glass">
+        <div class="container nav-content">
+            <div class="logo">
+                <span class="gradient-text">Nex</span>Trade
+            </div>
+            <div class="nav-links">
+                <a href="#home" class="nav-item active" data-target="home" data-i18n="nav_home">Home</a>
+                <a href="#marketplace" class="nav-item" data-target="marketplace" data-i18n="nav_marketplace">Marketplace</a>
+                <a href="#escrow" class="nav-item" data-target="escrow" data-i18n="nav_howitworks">How it works</a>
+            </div>
+            <div style="display:flex; gap: 10px; align-items:center;">
+                <div class="lang-switcher">
+                    <a href="#" class="lang-btn" data-lang="en">EN</a> |
+                    <a href="#" class="lang-btn" data-lang="uk">UK</a> |
+                    <a href="#" class="lang-btn" data-lang="ru">RU</a>
+                </div>
+                <button class="btn btn-primary" data-i18n="nav_connect">Connect Wallet</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- HOME SECTION -->
+        <section id="home" class="page-section active">
+            <div class="hero">
+                <div class="hero-content">
+                    <div class="badge">
+                        <i class="fa-brands fa-ethereum"></i> <span data-i18n="hero_badge">100% Crypto Based</span>
+                    </div>
+                    <h1 class="hero-title"><span data-i18n="hero_title_1">Buy, Sell & Invest in Profitable Businesses with </span><span class="gradient-text" data-i18n="hero_title_2">Crypto</span></h1>
+                    <p class="hero-subtitle" data-i18n="hero_subtitle">The first decentralized broker platform with a guaranteed secure escrow system. Discover high-margin ventures, invest in fractions, or acquire full ownership securely.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-lg" id="btn-sell-business" data-i18n="btn_sell_business">List Your Project</button>
+                        <button class="btn btn-secondary btn-lg" id="btn-join-investors"><i class="fa-solid fa-users"></i> <span data-i18n="btn_join_investors">Join Investors</span></button>
+                    </div>
+                    
+                    <div class="stats glass">
+                        <div class="stat-item">
+                            <div class="stat-value">0%</div>
+                            <div class="stat-label" data-i18n="stat_vol">Risk with Escrow</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">100%</div>
+                            <div class="stat-label" data-i18n="stat_sold">Verified Projects</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">24/7</div>
+                            <div class="stat-label" data-i18n="stat_sec">Broker Support</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MARKETPLACE SECTION -->
+        <section id="marketplace" class="page-section d-none">
+            <div class="section-header">
+                <h2><span data-i18n="market_title">Premium </span><span class="gradient-text" data-i18n="market_title_2">Marketplace</span></h2>
+                <p data-i18n="market_desc">Curated businesses verified by our team. High-ROI opportunities.</p>
+            </div>
+            
+            <div class="filters glass">
+                <div class="filter-group">
+                    <label data-i18n="filter_cat">Category</label>
+                    <select class="form-control">
+                        <option data-i18n="filter_cat_all">All Categories</option>
+                        <option data-i18n="filter_cat_saas">SaaS</option>
+                        <option data-i18n="filter_cat_ecom">E-commerce</option>
+                        <option data-i18n="filter_cat_crypto">Web3 / Crypto</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label data-i18n="filter_price">Price Range</label>
+                    <select class="form-control">
+                        <option data-i18n="filter_price_any">Any Price</option>
+                        <option>0 - 5 ETH</option>
+                        <option>5 - 20 ETH</option>
+                        <option>20+ ETH</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label data-i18n="filter_type">Investment Type</label>
+                    <select class="form-control">
+                        <option data-i18n="filter_type_full">Full Acquisition</option>
+                        <option data-i18n="filter_type_frac">Fractional (Shares)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="marketplace-grid">
+                <!-- Listing 1 -->
+                <div class="listing-card glass">
+                    <div class="listing-img" style="background: linear-gradient(135deg, #1f1c2c, #928dab);">
+                        <div class="listing-badge bg-primary" data-i18n="c1_badge">Verified SaaS</div>
+                    </div>
+                    <div class="listing-content">
+                        <h3 data-i18n="c1_title">AI Marketing Platform</h3>
+                        <p class="listing-desc" data-i18n="c1_desc">A highly profitable AI-driven marketing tool with over 2000 active monthly subscribers.</p>
+                        
+                        <div class="metrics">
+                            <div class="metric">
+                                <i class="fa-solid fa-chart-line"></i>
+                                <span data-i18n="c1_roi">ROI: 65% / yr</span>
+                            </div>
+                            <div class="metric">
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                                <span data-i18n="c1_mrr">MRR: $15,000</span>
+                            </div>
+                        </div>
+                        
+                        <div class="listing-footer">
+                            <div class="price">
+                                <span class="price-label" data-i18n="card_price">Asking Price</span>
+                                <span class="price-value">45 ETH</span>
+                            </div>
+                            <button class="btn btn-primary" data-i18n="card_view">View Deal</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Listing 2 -->
+                <div class="listing-card glass">
+                    <div class="listing-img" style="background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);">
+                        <div class="listing-badge bg-secondary" data-i18n="c2_badge">Fractional Investing</div>
+                    </div>
+                    <div class="listing-content">
+                        <h3 data-i18n="c2_title">Crypto Trading Algorithm</h3>
+                        <p class="listing-desc" data-i18n="c2_desc">Invest in a battle-tested HFT algorithm. Looking for liquidity providers.</p>
+                        
+                        <div class="metrics">
+                            <div class="metric">
+                                <i class="fa-solid fa-chart-line"></i>
+                                <span data-i18n="c2_roi">Target ROI: 120% / yr</span>
+                            </div>
+                            <div class="metric">
+                                <i class="fa-solid fa-users"></i>
+                                <span data-i18n="c2_slots">12 / 50 Slots</span>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 25%"></div>
+                        </div>
+                        
+                        <div class="listing-footer">
+                            <div class="price">
+                                <span class="price-label" data-i18n="card_min_inv">Min. Investment</span>
+                                <span class="price-value">0.5 ETH</span>
+                            </div>
+                            <button class="btn btn-primary" data-i18n="card_invest">Invest Now</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Listing 3 -->
+                <div class="listing-card glass">
+                    <div class="listing-img" style="background: linear-gradient(135deg, #141e30, #243b55);">
+                        <div class="listing-badge bg-primary" data-i18n="c3_badge">E-commerce</div>
+                    </div>
+                    <div class="listing-content">
+                        <h3 data-i18n="c3_title">Premium Gadgets Store</h3>
+                        <p class="listing-desc" data-i18n="c3_desc">Dropshipping store with established supply chain and high organic traffic.</p>
+                        
+                        <div class="metrics">
+                            <div class="metric">
+                                <i class="fa-solid fa-chart-line"></i>
+                                <span data-i18n="c3_margin">Margin: 45%</span>
+                            </div>
+                            <div class="metric">
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                                <span data-i18n="c3_profit">Profit: $8,000/mo</span>
+                            </div>
+                        </div>
+                        
+                        <div class="listing-footer">
+                            <div class="price">
+                                <span class="price-label" data-i18n="card_price">Asking Price</span>
+                                <span class="price-value">12 ETH</span>
+                            </div>
+                            <button class="btn btn-primary" data-i18n="card_view">View Deal</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOW IT WORKS SECTION -->
+        <section id="escrow" class="page-section d-none">
+            <div class="section-header">
+                <h2><span data-i18n="hiw_title">How </span><span class="gradient-text" data-i18n="hiw_title_2">NexTrade Works</span></h2>
+                <p data-i18n="hiw_desc">We connect buyers and sellers of crypto businesses, securing all transactions via our transparent Escrow.</p>
+            </div>
+            
+            <div class="escrow-grid">
+                <div class="escrow-steps glass">
+                    <h3 style="margin-bottom: 20px;" data-i18n="hiw_subtitle">The Broker Process</h3>
+                    <div class="step">
+                        <div class="step-num"><i class="fa-solid fa-pen-to-square"></i></div>
+                        <div class="step-content">
+                            <h4 data-i18n="hiw_step1_title">1. Submit Project or Join List</h4>
+                            <p><span data-i18n="hiw_step1_desc"><strong>Sellers:</strong> Fill out the form to list your project. <strong>Buyers:</strong> Join the whitelist to get early access to verified deals.</span></p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num"><i class="fa-solid fa-magnifying-glass"></i></div>
+                        <div class="step-content">
+                            <h4 data-i18n="hiw_step2_title">2. Due Diligence & Matching</h4>
+                            <p data-i18n="hiw_step2_desc">We manually verify the metrics, traffic, and code of the project. Then, we privately introduce interested buyers to the seller.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num"><i class="fa-solid fa-handshake"></i></div>
+                        <div class="step-content">
+                            <h4 data-i18n="hiw_step3_title">3. Secure Escrow Transfer</h4>
+                            <p data-i18n="hiw_step3_desc">Buyer locks the funds. Seller transfers assets (domains, code, channels). NexTrade verifies the transfer and releases funds, guaranteeing 0% risk.</p>
+                        </div>
+                    </div>
+                    <div class="pricing-card mt-3">
+                        <h4 data-i18n="fee_title">Platform Fees</h4>
+                        <ul>
+                            <li data-i18n="fee_1"><strong>Listing a Business:</strong> Free</li>
+                            <li data-i18n="fee_2"><strong>Success Fee:</strong> 5-10% (only upon successful sale)</li>
+                            <li data-i18n="fee_3"><strong>Due Diligence Service:</strong> By request</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="escrow-visualization glass">
+                    <div class="escrow-ui">
+                        <div class="escrow-status">
+                            <span class="status-dot"></span> Status: Funds Locked
+                        </div>
+                        
+                        <div class="actor buyer">
+                            <i class="fa-solid fa-user"></i>
+                            <div>
+                                <h5>Buyer</h5>
+                                <span class="text-sm">Wallet: 0x4f...8a2</span>
+                            </div>
+                        </div>
+                        
+                        <div class="smart-contract">
+                            <i class="fa-solid fa-file-contract"></i>
+                            <h4>NexTrade Escrow</h4>
+                            <div class="amount-locked">
+                                <i class="fa-brands fa-ethereum"></i> 45 ETH
+                            </div>
+                        </div>
+                        
+                        <div class="actor seller">
+                            <i class="fa-solid fa-user-tie"></i>
+                            <div>
+                                <h5>Seller</h5>
+                                <span class="text-sm">Awaiting Transfer</span>
+                            </div>
+                        </div>
+                        
+                        <div class="action-btn">
+                            <button class="btn btn-secondary w-100">Release Funds (Requires Buyer Signature)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Sell Business Modal -->
+    <div id="modal-sell" class="modal">
+        <div class="modal-content glass">
+            <span class="close-modal" data-modal="modal-sell">&times;</span>
+            <div class="modal-header">
+                <h3 data-i18n="modal_sell_title">Submit Your Project</h3>
+                <p data-i18n="modal_sell_desc">Fill out the form below to list your business or channel.</p>
+            </div>
+            <form id="form-sell" class="lead-form">
+                <div class="form-group">
+                    <label data-i18n="label_name">Your Name / Telegram Username</label>
+                    <input type="text" id="sell-name" class="form-control" placeholder="@username or Name" required>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="label_type">Project Type</label>
+                    <select id="sell-type" class="form-control">
+                        <option data-i18n="opt_tg">Telegram Channel / Bot</option>
+                        <option data-i18n="opt_crypto">Crypto Project / SaaS</option>
+                        <option data-i18n="opt_ecom">E-commerce / Drop Servicing</option>
+                        <option data-i18n="opt_other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="label_link">Project Link (Optional)</label>
+                    <input type="url" id="sell-url" class="form-control" placeholder="https://t.me/yourchannel">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="label_price">Desired Price ($ or Crypto)</label>
+                    <input type="text" id="sell-price" class="form-control" placeholder="e.g. $5,000 or 2 ETH" required>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="label_desc">Quick Description</label>
+                    <textarea id="sell-desc" class="form-control" rows="3" placeholder="..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-100" data-i18n="btn_submit_review">Submit for Review</button>
+                <p class="form-success d-none text-success mt-2"><i class="fa-solid fa-check-circle"></i> <span data-i18n="msg_success">Application sent!</span></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Join Investors Modal -->
+    <div id="modal-invest" class="modal">
+        <div class="modal-content glass">
+            <span class="close-modal" data-modal="modal-invest">&times;</span>
+            <div class="modal-header">
+                <h3 data-i18n="modal_inv_title">Join Investors List</h3>
+                <p data-i18n="modal_inv_desc">Get exclusive early access to verified, high-ROI deals.</p>
+            </div>
+            <form id="form-invest" class="lead-form">
+                <div class="form-group">
+                    <label data-i18n="label_name">Your Name / Telegram Username</label>
+                    <input type="text" id="invest-name" class="form-control" placeholder="@username or Name" required>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="label_email">Preferred Contact Email</label>
+                    <input type="email" id="invest-email" class="form-control" placeholder="investment@yourmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="label_budget">Investment Budget (Approx)</label>
+                    <select id="invest-budget" class="form-control">
+                        <option data-i18n="opt_under">Under $5,000</option>
+                        <option>$5000 - $20,000</option>
+                        <option>$20,000 - $100,000</option>
+                        <option data-i18n="opt_over">Over $100,000</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary w-100" data-i18n="btn_join_white">Join Whitelist</button>
+                <p class="form-success d-none text-success mt-2"><i class="fa-solid fa-check-circle"></i> <span data-i18n="msg_success">Action completed successfully!</span></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="lang.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
