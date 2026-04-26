@@ -715,22 +715,28 @@ main {
     /* Navbar Adjustment */
     .nav-content {
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 5px;
         justify-content: space-between;
+        align-items: center;
+    }
+    .navbar .btn-primary {
+        display: none; /* Ховаємо велику кнопку в хедері для економії місця на мобільному */
     }
     .nav-links {
         order: 3;
         width: 100%;
         display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin-top: 5px;
+        justify-content: space-around; /* Рівномірний розподіл */
+        gap: 5px;
+        margin-top: 10px;
     }
     .nav-item {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        white-space: nowrap; /* Щоб "Як це працює" не падало на 2 рядки */
     }
     .lang-switcher {
         margin-right: 0;
+        font-size: 0.85rem;
     }
 
     /* Hero Section */
