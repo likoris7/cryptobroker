@@ -363,6 +363,31 @@
         </div>
     </div>
 
+    <!-- Connect Wallet Modal -->
+    <div id="modal-wallet" class="modal">
+        <div class="modal-content glass" style="max-width: 400px; text-align: center;">
+            <span class="close-modal" data-modal="modal-wallet">&times;</span>
+            <div class="modal-header">
+                <h3 data-i18n="modal_wallet_title">Connect Wallet</h3>
+                <p data-i18n="modal_wallet_desc">Choose your preferred Web3 wallet to connect to NexTrade.</p>
+            </div>
+            <div class="wallet-options" style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-secondary wallet-btn" onclick="simulateWalletConnect('MetaMask')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask" style="width: 24px; height: 24px; margin-right: 10px; vertical-align: middle;">
+                    MetaMask
+                </button>
+                <button class="btn btn-secondary wallet-btn" onclick="simulateWalletConnect('Trust Wallet')">
+                    <img src="https://trustwallet.com/assets/images/media/assets/trust_logo_blue.svg" alt="Trust" style="width: 24px; height: 24px; margin-right: 10px; vertical-align: middle;">
+                    Trust Wallet
+                </button>
+                <button class="btn btn-secondary wallet-btn" onclick="simulateWalletConnect('WalletConnect')">
+                    <img src="https://raw.githubusercontent.com/WalletConnect/walletconnect-assets/master/Logo/Blue%20(Default)/Logo.svg" alt="WalletConnect" style="width: 24px; height: 24px; margin-right: 10px; vertical-align: middle;">
+                    WalletConnect
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="lang.js"></script>
     <script src="app.js"></script>
 </body>

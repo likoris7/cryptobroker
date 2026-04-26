@@ -32,10 +32,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnInvest = document.getElementById('btn-join-investors');
     const modalSell = document.getElementById('modal-sell');
     const modalInvest = document.getElementById('modal-invest');
+    const modalWallet = document.getElementById('modal-wallet');
     const closeBtns = document.querySelectorAll('.close-modal');
 
     if(btnSell) btnSell.addEventListener('click', () => modalSell.classList.add('show'));
     if(btnInvest) btnInvest.addEventListener('click', () => modalInvest.classList.add('show'));
+    const btnConnectOptions = document.querySelectorAll('.nav-content .btn-primary, .marketplace-grid .btn-primary');
+    
+    // Header connect wallet
+    const headerConnectBtn = document.querySelector('nav .btn-primary');
+    if(headerConnectBtn) headerConnectBtn.addEventListener('click', () => {
+        if(modalWallet) modalWallet.classList.add('show');
+    });
 
     closeBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -329,3 +337,29 @@ function closeAllSelect(elmnt) {
 }
 
 document.addEventListener("click", closeAllSelect);
+
+// Global function for simulated wallet connect
+window.simulateWalletConnect = function(walletName) {
+    const headerConnectBtns = document.querySelectorAll('nav .btn-primary');
+    
+    // Close modal
+    const modalWallet = document.getElementById('modal-wallet');
+    if(modalWallet) modalWallet.classList.remove('show');
+
+    headerConnectBtns.forEach(btn => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+        
+        setTimeout(() => {
+            const prefix = "0x" + Math.floor(Math.random()*16777215).toString(16).padStart(4, '0');
+            const suffix = Math.floor(Math.random()*16777215).toString(16).padStart(4, '0');
+            
+            btn.innerHTML = `<i class="fa-brands fa-ethereum"></i> ${prefix}...${suffix}`;
+            btn.style.background = 'rgba(16, 185, 129, 0.2)';
+            btn.style.border = '1px solid rgba(16, 185, 129, 0.5)';
+            btn.style.color = '#10b981';
+            
+            alert(`${walletName} connected successfully!`);
+        }, 1500);
+    });
+};
