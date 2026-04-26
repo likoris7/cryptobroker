@@ -122,17 +122,9 @@ document.addEventListener('DOMContentLoaded', () => {
                               `💰 <b>Бюджет:</b> ${sanitizedData['invest-budget']}`;
                 }
                 
-                const tgUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+                const tgUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}&parse_mode=HTML`;
                 
-                fetch(tgUrl, {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({
-                        chat_id: CHAT_ID,
-                        text: message,
-                        parse_mode: "HTML"
-                    })
-                }).then(res => res.json()).then(res => {
+                fetch(tgUrl).then(res => res.json()).then(res => {
                     if(!res.ok) {
                         alert("Telegram API Error: " + res.description);
                         btn.innerHTML = "Submit for Review";
