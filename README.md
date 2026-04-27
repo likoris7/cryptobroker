@@ -1,4 +1,4 @@
-# NexTrade: Crypto Business Broker MVP
+# Zerion: Crypto Business Broker MVP
 > Premium Turnkey Brokerage Platform
 
 Вітаємо з придбанням! Цей проект повністю готовий до роботи. Він використовує Telegram Bot API як безкоштовну серверну інфраструктуру (Serverless CRM) для генерації лідів.
@@ -35,5 +35,14 @@ const CHAT_ID = "ВАШ_ID_З_КРОКУ_2";
 - Натисніть "Deploy".
 Через 15 секунд ваш сайт буде доступний на весь світ!
 
+### Крок 5. Підключення Бази Даних (Firebase) для публікації проєктів
+Щоб ваші опубліковані в Адмінці проєкти бачили всі користувачі Інтернету, потрібно налаштувати безкоштовну базу даних:
+1. Зайдіть на [Firebase Console](https://console.firebase.google.com/) та натисніть **Add Project**.
+2. Перейдіть у розділ **Firestore Database** і створіть базу (виберіть "Start in Test Mode").
+3. У бічному меню оберіть **Project Overview -> шестірня (Project settings)**.
+4. Гортайте вниз, знайдіть "Your apps" та клікніть на іконку **</>** (Web App).
+5. Зареєструйте додаток, після чого ви побачите об'єкт `firebaseConfig` з вашими ключами (`apiKey`, `projectId` тощо).
+6. Відкрийте файл `firebase-config.js` у цьому проекті та вставте ваші ключі замість прикладу.
+
 ---
-*Built with modern Glassmorphism UI, Anti-XSS form protection, Geo-IP filtering, and multi-language support (EN, UA, RU).*
+*Built with modern Glassmorphism UI, Anti-XSS form protection, Geo-IP filtering, multi-language support (EN, UA, RU), and Serverless Firebase Backend.*

@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Панель Адміністратора | NexTrade</title>
+    <title>Панель Адміністратора | Zerion</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background: #f8fafc; margin: 0; padding: 20px; color: #334155; }
         .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
         h1, h2 { color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 20px; }
+        .badge-warning { background: #fef08a; color: #854d0e; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; margin-left: 10px; display: none;}
         table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
         th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
         th { background: #f1f5f9; font-weight: 600; }
         .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-family: inherit; }
         .btn-danger { background: #ef4444; color: white; }
         .btn-danger:hover { background: #dc2828; }
-        .btn-primary { background: #7c3aed; color: white; } /* Purple accent for NexTrade */
-        .btn-primary:hover { background: #6d28d9; }
+        .btn-primary { background: #14b8a6; color: white; } /* Teal accent for Zerion */
+        .btn-primary:hover { background: #0d9488; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         .form-group { display: flex; flex-direction: column; }
         label { font-weight: 500; margin-bottom: 5px; font-size: 14px; }
@@ -30,13 +31,13 @@
     <div class="toast" id="toast">Дія успішна!</div>
 
     <div class="container">
-        <h1>💼 Панель управління бізнесами (NexTrade)</h1>
+        <h1>💼 Панель управління бізнесами (Zerion) <span class="badge-warning" id="localBadge">Local Mode</span></h1>
         
         <h2>Додати новий бізнес на платформу</h2>
         <form id="addBusinessForm">
             <div class="form-grid">
                 <div class="form-group">
-                    <label>Назва бізнесу *</label>
+                    <label>Назва бізнесу (або контакт) *</label>
                     <input type="text" id="bTitle" required>
                 </div>
                 <div class="form-group">
@@ -45,6 +46,8 @@
                         <option value="SaaS">SaaS</option>
                         <option value="E-commerce">E-commerce</option>
                         <option value="Web3 / Crypto">Web3 / Crypto</option>
+                        <option value="Telegram / Social">Telegram / Social</option>
+                        <option value="Other">Other</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -55,8 +58,8 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Ціна (ETH) *</label>
-                    <input type="number" id="bPrice" step="0.01" required>
+                    <label>Ціна (ETH, $, ₴) *</label>
+                    <input type="text" id="bPrice" required>
                 </div>
                 <div class="form-group">
                     <label>Щорічний ROI (%)</label>
@@ -82,24 +85,26 @@
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Фото</th>
                     <th>Назва бізнесу</th>
-                    <th>Ціна (ETH)</th>
+                    <th>Ціна</th>
                     <th>Категорія</th>
                     <th>Тип</th>
                     <th>Дії</th>
                 </tr>
             </thead>
             <tbody id="businessesTableBody">
-                <tr><td colspan="7" style="text-align:center;">Завантаження...</td></tr>
+                <tr><td colspan="6" style="text-align:center;">Завантаження...</td></tr>
             </tbody>
         </table>
     </div>
 
+    <!-- Firebase SDK (Compat Version) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
     <script>
-        // Імітація бази даних через localStorage
-        const DB_KEY = 'nextrade_businesses';
         const tableBody = document.getElementById('businessesTableBody');
         const form = document.getElementById('addBusinessForm');
         
@@ -110,84 +115,106 @@
             setTimeout(() => toast.style.display = 'none', 3000);
         }
 
-        function getBusinesses() {
-            const data = localStorage.getItem(DB_KEY);
-            return data ? JSON.parse(data) : [];
+        // AUTO-FILL FROM URL (Telegram Approval Pipeline)
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('action') === 'approve') {
+            document.getElementById('bTitle').value = urlParams.get('title') || '';
+            document.getElementById('bPrice').value = urlParams.get('price') || '';
+            document.getElementById('bDesc').value = urlParams.get('desc') || '';
+            
+            showToast("Дані успішно завантажені з Telegram. Додайте картинку і публікуйте!");
+            
+            // Clean URL visually without reloading
+            window.history.replaceState({}, document.title, window.location.pathname);
         }
 
-        function saveBusinesses(businesses) {
-            localStorage.setItem(DB_KEY, JSON.stringify(businesses));
-        }
-
-        function loadBusinesses() {
-            const businesses = getBusinesses();
+        async function loadBusinesses() {
             tableBody.innerHTML = '';
+            let businesses = [];
+
+            if (db) {
+                // Load from Firebase
+                const snapshot = await db.collection("businesses").orderBy("createdAt", "desc").get();
+                snapshot.forEach(doc => {
+                    businesses.push({ id: doc.id, ...doc.data() });
+                });
+            } else {
+                // Load from localStorage
+                document.getElementById('localBadge').style.display = 'inline-block';
+                const data = localStorage.getItem('zerion_businesses');
+                businesses = data ? JSON.parse(data) : [];
+            }
             
             if (businesses.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">База порожня. Додайте перший бізнес.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">База порожня. Додайте перший бізнес.</td></tr>';
                 return;
             }
 
             businesses.forEach(b => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${b.id}</td>
                     <td><img src="${b.image_url}" width="40" height="40" style="border-radius:4px; object-fit:cover; background: #e2e8f0;"></td>
                     <td><strong>${b.title}</strong></td>
-                    <td><span style="color:#7c3aed; font-weight:600;">${b.price} ETH</span></td>
+                    <td><span style="color:#7c3aed; font-weight:600;">${b.price}</span></td>
                     <td>${b.category}</td>
                     <td>${b.type === 'Full' ? 'Продаж' : 'Інвестування'}</td>
-                    <td><button class="btn btn-danger" onclick="deleteBusiness(${b.id})">Видалити</button></td>
+                    <td><button class="btn btn-danger" onclick="deleteBusiness('${b.id}')">Видалити</button></td>
                 `;
                 tableBody.appendChild(tr);
             });
         }
 
-        function deleteBusiness(id) {
+        window.deleteBusiness = async function(id) {
             if(!confirm('Ви впевнені, що хочете видалити цей бізнес з Маркетплейсу?')) return;
             
-            const businesses = getBusinesses();
-            const filtered = businesses.filter(b => b.id !== id);
-            saveBusinesses(filtered);
+            if (db) {
+                await db.collection("businesses").doc(id.toString()).delete();
+            } else {
+                const businesses = JSON.parse(localStorage.getItem('zerion_businesses') || '[]');
+                const filtered = businesses.filter(b => b.id.toString() !== id.toString());
+                localStorage.setItem('zerion_businesses', JSON.stringify(filtered));
+            }
             
             showToast('Лістинг успішно видалено!');
             loadBusinesses();
         }
 
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
             btn.textContent = 'Збереження...';
 
-            const businesses = getBusinesses();
-            
             const payload = {
-                id: Date.now(), // Унікальний ID
                 title: document.getElementById('bTitle').value,
                 category: document.getElementById('bCategory').value,
                 type: document.getElementById('bType').value,
-                price: parseFloat(document.getElementById('bPrice').value),
+                price: document.getElementById('bPrice').value,
                 roi: document.getElementById('bROI').value || null,
                 revenue: document.getElementById('bRevenue').value || null,
                 image_url: document.getElementById('bImage').value,
-                description: document.getElementById('bDesc').value
+                description: document.getElementById('bDesc').value,
+                createdAt: Date.now()
             };
 
-            businesses.push(payload);
-            saveBusinesses(businesses);
+            if (db) {
+                await db.collection("businesses").add(payload);
+            } else {
+                const businesses = JSON.parse(localStorage.getItem('zerion_businesses') || '[]');
+                payload.id = Date.now();
+                businesses.push(payload);
+                localStorage.setItem('zerion_businesses', JSON.stringify(businesses));
+            }
 
-            setTimeout(() => {
-                showToast('Бізнес успішно додано на платформу!');
-                form.reset();
-                loadBusinesses();
-                
-                btn.disabled = false;
-                btn.textContent = 'Опублікувати на Маркетплейсі';
-            }, 400); // Невелика затримка для збереження "відчуття роботи"
+            showToast('Бізнес успішно додано на платформу!');
+            form.reset();
+            loadBusinesses();
+            
+            btn.disabled = false;
+            btn.textContent = 'Опублікувати на Маркетплейсі';
         });
 
-        // Ініціалізація
+        // Init
         loadBusinesses();
     </script>
 </body>

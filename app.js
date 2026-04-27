@@ -116,6 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const CHAT_ID = "969879267";
                 
                 let message = "";
+                let replyMarkup = {};
+                
                 if (form.id === "form-sell") {
                     message = `🔥 <b>НОВА ЗАЯВКА НА ПРОДАЖ</b> 🔥\n\n` +
                               `👤 <b>Контакт:</b> ${sanitizedData['sell-name']}\n` +
@@ -123,6 +125,16 @@ document.addEventListener('DOMContentLoaded', () => {
                               `🔗 <b>Лінк:</b> ${sanitizedData['sell-url'] || 'Не вказано'}\n` +
                               `💰 <b>Ціна:</b> ${sanitizedData['sell-price']}\n` +
                               `📝 <b>Опис:</b>\n${sanitizedData['sell-desc']}`;
+                              
+                    // URL-based admin pre-fill
+                    const currentDomain = window.location.origin + window.location.pathname.replace('index.html', '');
+                    const adminLink = `${currentDomain}admin.html?action=approve&title=${encodeURIComponent(sanitizedData['sell-name'])}&price=${encodeURIComponent(sanitizedData['sell-price'])}&type=${encodeURIComponent(sanitizedData['sell-type'])}&desc=${encodeURIComponent(sanitizedData['sell-desc'])}`;
+                    
+                    replyMarkup = {
+                        inline_keyboard: [
+                            [{ text: "✅ Схвалити (Опублікувати)", url: adminLink }]
+                        ]
+                    };
                 } else {
                     message = `💎 <b>НОВИЙ ІНВЕСТОР (Whitelist)</b> 💎\n\n` +
                               `👤 <b>Контакт:</b> ${sanitizedData['invest-name']}\n` +
@@ -130,9 +142,19 @@ document.addEventListener('DOMContentLoaded', () => {
                               `💰 <b>Бюджет:</b> ${sanitizedData['invest-budget']}`;
                 }
                 
-                const tgUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}&parse_mode=HTML`;
+                const tgUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+                const payload = {
+                    chat_id: CHAT_ID,
+                    text: message,
+                    parse_mode: 'HTML',
+                    reply_markup: form.id === "form-sell" ? replyMarkup : undefined
+                };
                 
-                fetch(tgUrl).then(res => res.json()).then(res => {
+                fetch(tgUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                }).then(res => res.json()).then(res => {
                     if(!res.ok) {
                         alert("Telegram API Error: " + res.description);
                         btn.innerHTML = "Submit for Review";
@@ -179,14 +201,25 @@ document.addEventListener('DOMContentLoaded', () => {
     setupCustomSelects();
 });
 
-function loadCustomBusinesses() {
+async function loadCustomBusinesses() {
     const grid = document.querySelector('.marketplace-grid');
     if (!grid) return;
 
-    const data = localStorage.getItem('nextrade_businesses');
-    if (!data) return; // No custom businesses added yet
-
-    const businesses = JSON.parse(data);
+    let businesses = [];
+    
+    if (typeof db !== 'undefined' && db !== null) {
+        // Fetch from Firebase
+        const snapshot = await db.collection("businesses").orderBy("createdAt", "asc").get();
+        snapshot.forEach(doc => {
+            businesses.push({ id: doc.id, ...doc.data() });
+        });
+    } else {
+        // Fallback to localStorage
+        const data = localStorage.getItem('zerion_businesses');
+        if (data) businesses = JSON.parse(data);
+    }
+    
+    if (businesses.length === 0) return;
     
     businesses.forEach(b => {
         const badgeColor = b.type === 'Full' ? 'bg-primary' : 'bg-secondary';
@@ -236,7 +269,7 @@ function loadCustomBusinesses() {
                 <div class="listing-footer">
                     <div class="price">
                         <span class="price-label">${priceLabel}</span>
-                        <span class="price-value">${b.price} ETH</span>
+                        <span class="price-value">${b.price}</span>
                     </div>
                     <button class="btn btn-primary">${buttonText}</button>
                 </div>

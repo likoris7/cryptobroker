@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexTrade | Crypto Business Broker</title>
+    <title>Zerion | Crypto Business Broker</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -28,7 +28,7 @@
     <nav class="navbar glass">
         <div class="container nav-content">
             <div class="logo">
-                <span class="gradient-text">Nex</span>Trade
+                <span class="gradient-text">Zer</span>ion
             </div>
             <div class="nav-links">
                 <a href="#home" class="nav-item active" data-target="home" data-i18n="nav_home">Home</a>
@@ -214,7 +214,7 @@
         <!-- HOW IT WORKS SECTION -->
         <section id="escrow" class="page-section d-none">
             <div class="section-header">
-                <h2><span data-i18n="hiw_title">How </span><span class="gradient-text" data-i18n="hiw_title_2">NexTrade Works</span></h2>
+                <h2><span data-i18n="hiw_title">How </span><span class="gradient-text" data-i18n="hiw_title_2">Zerion Works</span></h2>
                 <p data-i18n="hiw_desc">We connect buyers and sellers of crypto businesses, securing all transactions via our transparent Escrow.</p>
             </div>
             
@@ -239,7 +239,7 @@
                         <div class="step-num"><i class="fa-solid fa-handshake"></i></div>
                         <div class="step-content">
                             <h4 data-i18n="hiw_step3_title">3. Secure Escrow Transfer</h4>
-                            <p data-i18n="hiw_step3_desc">Buyer locks the funds. Seller transfers assets (domains, code, channels). NexTrade verifies the transfer and releases funds, guaranteeing 0% risk.</p>
+                            <p data-i18n="hiw_step3_desc">Buyer locks the funds. Seller transfers assets (domains, code, channels). Zerion verifies the transfer and releases funds, guaranteeing 0% risk.</p>
                         </div>
                     </div>
                     <div class="pricing-card mt-3">
@@ -268,7 +268,7 @@
                         
                         <div class="smart-contract">
                             <i class="fa-solid fa-file-contract"></i>
-                            <h4>NexTrade Escrow</h4>
+                            <h4>Zerion Escrow</h4>
                             <div class="amount-locked">
                                 <i class="fa-brands fa-ethereum"></i> 45 ETH
                             </div>
@@ -369,7 +369,7 @@
             <span class="close-modal" data-modal="modal-wallet">&times;</span>
             <div class="modal-header">
                 <h3 data-i18n="modal_wallet_title">Connect Wallet</h3>
-                <p data-i18n="modal_wallet_desc">Choose your preferred Web3 wallet to connect to NexTrade.</p>
+                <p data-i18n="modal_wallet_desc">Choose your preferred Web3 wallet to connect to Zerion.</p>
             </div>
             <div class="wallet-options" style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
                 <button class="btn btn-secondary wallet-btn" onclick="simulateWalletConnect('MetaMask')">
@@ -388,6 +388,11 @@
         </div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
     <script src="lang.js"></script>
     <script src="app.js"></script>
 </body>

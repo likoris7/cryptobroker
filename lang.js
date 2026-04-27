@@ -62,7 +62,7 @@ const translations = {
         
         // How it works
         hiw_title: "How ",
-        hiw_title_2: "NexTrade Works",
+        hiw_title_2: "Zerion Works",
         hiw_desc: "We connect buyers and sellers of crypto businesses, securing all transactions via our transparent Escrow.",
         hiw_subtitle: "The Broker Process",
         hiw_step1_title: "1. Submit Project or Join List",
@@ -70,7 +70,7 @@ const translations = {
         hiw_step2_title: "2. Due Diligence & Matching",
         hiw_step2_desc: "We manually verify the metrics, traffic, and code of the project. Then, we privately introduce interested buyers to the seller.",
         hiw_step3_title: "3. Secure Escrow Transfer",
-        hiw_step3_desc: "Buyer locks the funds. Seller transfers assets. NexTrade verifies the transfer and releases funds, guaranteeing 0% risk.",
+        hiw_step3_desc: "Buyer locks the funds. Seller transfers assets. Zerion verifies the transfer and releases funds, guaranteeing 0% risk.",
         
         // Fees
         fee_title: "Platform Fees",
@@ -165,7 +165,7 @@ const translations = {
         
         // How it works
         hiw_title: "Як працює ",
-        hiw_title_2: "NexTrade",
+        hiw_title_2: "Zerion",
         hiw_desc: "Ми зводимо покупців та продавців криптобізнесів, гарантуючи безпеку через прозорий Ескроу.",
         hiw_subtitle: "Процес Роботи Брокера",
         hiw_step1_title: "1. Заявка або Whitelist",
@@ -173,7 +173,7 @@ const translations = {
         hiw_step2_title: "2. Перевірка та Підбір",
         hiw_step2_desc: "Ми вручну перевіряємо метрики, трафік та код проекту. Потім приватно знайомимо покупця з продавцем.",
         hiw_step3_title: "3. Безпечна Escrow Угода",
-        hiw_step3_desc: "Покупець блокує кошти. Продавець передає активи. NexTrade все перевіряє і виплачує гроші. Ризик 0%.",
+        hiw_step3_desc: "Покупець блокує кошти. Продавець передає активи. Zerion все перевіряє і виплачує гроші. Ризик 0%.",
         
         // Fees
         fee_title: "Комісії Платформи",
@@ -268,7 +268,7 @@ const translations = {
         
         // How it works
         hiw_title: "Как работает ",
-        hiw_title_2: "NexTrade",
+        hiw_title_2: "Zerion",
         hiw_desc: "Мы сводим покупателей и продавцов криптобизнесов, гарантируя безопасность через прозрачный Эскроу.",
         hiw_subtitle: "Процесс Работы Брокера",
         hiw_step1_title: "1. Заявка или Whitelist",
@@ -276,7 +276,7 @@ const translations = {
         hiw_step2_title: "2. Проверка и Подбор",
         hiw_step2_desc: "Мы вручную проверяем метрики, трафик и код проекта. Позже конфиденциально знакомим покупателя с продавцом.",
         hiw_step3_title: "3. Безопасная Escrow сделка",
-        hiw_step3_desc: "Покупатель блокирует средства. Продавец передает активы. NexTrade всё проверяет и выплачивает деньги. Риск 0%.",
+        hiw_step3_desc: "Покупатель блокирует средства. Продавец передает активы. Zerion всё проверяет и выплачивает деньги. Риск 0%.",
         
         // Fees
         fee_title: "Комиссии Платформы",
@@ -314,7 +314,7 @@ function changeLanguage(langCode) {
     if(!translations[langCode]) return;
     
     // Save to localStorage
-    localStorage.setItem('nextrade_lang', langCode);
+    localStorage.setItem('zerion_lang', langCode);
     
     // Update all elements with data-i18n attribute
     const elements = document.querySelectorAll('[data-i18n]');
@@ -336,7 +336,7 @@ function changeLanguage(langCode) {
 
 // Ensure lang loaded immediately
 document.addEventListener('DOMContentLoaded', () => {
-    let savedLang = localStorage.getItem('nextrade_lang') || 'en';
+    let savedLang = localStorage.getItem('zerion_lang') || 'en';
     changeLanguage(savedLang);
     
     const langBtns = document.querySelectorAll('.lang-btn');

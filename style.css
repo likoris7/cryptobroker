@@ -1,11 +1,11 @@
 :root {
-    --bg-dark: #0a0a0f;
-    --accent-primary: #7c3aed; /* Vibrant Purple */
-    --accent-secondary: #0ea5e9; /* Light Blue */
-    --text-main: #f8fafc;
+    --bg-dark: #020617; /* Very clean slate black */
+    --accent-primary: #14b8a6; /* Teal for clean transparency */
+    --accent-secondary: #06b6d4; /* Vibrant Cyan */
+    --text-main: #ffffff;
     --text-muted: #94a3b8;
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-bg: rgba(255, 255, 255, 0.02);
+    --glass-border: rgba(255, 255, 255, 0.06);
 }
 
 * {
@@ -96,13 +96,13 @@ h1, h2, h3, h4, .logo, .hero-title {
     gap: 8px;
 }
 .btn-primary {
-    background: linear-gradient(135deg, var(--accent-primary), #5b21b6);
+    background: linear-gradient(135deg, var(--accent-primary), #0284c7);
     color: white;
-    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+    box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
 }
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+    box-shadow: 0 6px 20px rgba(20, 184, 166, 0.5);
 }
 .btn-secondary {
     background: rgba(255, 255, 255, 0.1);
@@ -317,7 +317,7 @@ main {
 }
 .listing-card:hover {
     transform: translateY(-8px);
-    border-color: rgba(124, 58, 237, 0.3);
+    border-color: rgba(20, 184, 166, 0.3);
 }
 .listing-img {
     height: 180px;
@@ -335,7 +335,7 @@ main {
     font-weight: 600;
     color: white;
 }
-.bg-primary { background: rgba(124, 58, 237, 0.8); backdrop-filter: blur(4px); }
+.bg-primary { background: rgba(20, 184, 166, 0.8); backdrop-filter: blur(4px); }
 .bg-secondary { background: rgba(14, 165, 233, 0.8); backdrop-filter: blur(4px); }
 
 .listing-content {
@@ -428,7 +428,7 @@ main {
     justify-content: center;
     font-weight: 700;
     flex-shrink: 0;
-    box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
+    box-shadow: 0 0 15px rgba(20, 184, 166, 0.4);
 }
 .step-content h4 {
     font-size: 1.2rem;
@@ -502,8 +502,8 @@ main {
     border-radius: 50%;
 }
 .smart-contract {
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05));
-    border: 1px solid rgba(124, 58, 237, 0.3);
+    background: linear-gradient(135deg, rgba(20, 184, 166, 0.1), rgba(20, 184, 166, 0.05));
+    border: 1px solid rgba(20, 184, 166, 0.3);
     padding: 30px;
     border-radius: 12px;
     text-align: center;
@@ -638,7 +638,7 @@ main {
 .form-group select:focus,
 .form-group textarea:focus {
     border-color: var(--accent-primary);
-    box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+    box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.2);
 }
 
 /* Custom Select CSS */
@@ -695,7 +695,7 @@ main {
 }
 
 .select-items div:hover, .same-as-selected {
-    background-color: rgba(124, 58, 237, 0.3); /* Transparent purple */
+    background-color: rgba(20, 184, 166, 0.3); /* Transparent Teal */
     padding-left: 20px;
 }
 
